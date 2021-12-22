@@ -13,7 +13,8 @@ class ModelTestCase(TestCase):
                 password='000000'
             ),
             nome='Leonardo Nunes',
-            apelido='Leo'
+            apelido='Leo',
+            stripe_customer_id='cus_123456789'
         )
 
     def test_add_calangos(self):

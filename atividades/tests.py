@@ -16,7 +16,8 @@ class ModelTestCase(TestCase):
                 password='000000'
             ),
             nome='Leonardo Nunes',
-            apelido='Leo'
+            apelido='Leo',
+            stripe_customer_id='cus_123456789',
         )
 
         Socio.objects.create(
@@ -25,7 +26,8 @@ class ModelTestCase(TestCase):
                 password='111111'
             ),
             nome='Denise Almeida',
-            apelido='Deni'
+            apelido='Deni',
+            stripe_customer_id='cus_123456789',
         )
 
         Socio.objects.create(
@@ -34,7 +36,8 @@ class ModelTestCase(TestCase):
                 password='333333'
             ),
             nome='Jemima Kretli',
-            apelido='Jems'
+            apelido='Jems',
+            stripe_customer_id='cus_123456789',
         )
 
     def test_create_competidor(self):
