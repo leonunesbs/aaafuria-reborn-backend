@@ -59,7 +59,7 @@ class Socio(models.Model):
         self.cpf = self.sanitize_number_string(self.cpf)
         self.rg = self.sanitize_number_string(self.rg)
 
-    def create_stripe_customer(self, api_key=settings.STRIPE_API_TEST_KEY, *args, **kwargs):
+    def create_stripe_customer(self, api_key=settings.STRIPE_API_KEY, *args, **kwargs):
         if not self.stripe_customer_id:
             stripe.api_key = api_key
             customer = stripe.Customer.create(
@@ -69,7 +69,7 @@ class Socio(models.Model):
             )
             self.stripe_customer_id = customer.id
 
-    def create_stripe_portal_url(self, api_key=settings.STRIPE_API_TEST_KEY, *args, **kwargs):
+    def create_stripe_portal_url(self, api_key=settings.STRIPE_API_KEY, *args, **kwargs):
         stripe.api_key = api_key
         session = stripe.billing_portal.Session.create(
             customer=self.stripe_customer_id,
@@ -136,7 +136,7 @@ class Pagamento(models.Model):
     def __str__(self):
         return f'{self.socio}'
 
-    def create_stripe_checkout(self, api_key=settings.STRIPE_API_TEST_KEY, *args, **kwargs):
+    def create_stripe_checkout(self, api_key=settings.STRIPE_API_KEY, *args, **kwargs):
         stripe.api_key = api_key
         checkout_session = stripe.checkout.Session.create(
             customer=self.socio.stripe_customer_id,
@@ -149,12 +149,17 @@ class Pagamento(models.Model):
                 },
             ],
             mode='subscription',
+            discounts=[
+                {} if self.socio.data_inicio else {
+                    'coupon': 'PRIMEIRAASSOCIACAO',
+                }
+            ]
         )
 
         self.checkout_url = checkout_session.url
         self.checkout_id = checkout_session.id
 
-    def check_status(self, api_key=settings.STRIPE_API_TEST_KEY, *args, **kwargs):
+    def check_status(self, api_key=settings.STRIPE_API_KEY, *args, **kwargs):
         stripe.api_key = api_key
         try:
             checkout = stripe.checkout.Session.retrieve(self.checkout_id)

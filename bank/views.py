@@ -27,7 +27,12 @@ def bank_webhook(request):
     except Exception as e:
         return HttpResponse(content=e, status=400)
 
-    def create_movimentacao(checkout_session, socio):
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        checkout_session = event['data']['object']
+        socio = Socio.objects.get(
+            stripe_customer_id=checkout_session['customer'])
+
         aaafuria = Socio.objects.get(user__username="22238742")
         conta, _ = Conta.objects.get_or_create(socio=socio)
         conta.save()
@@ -53,12 +58,5 @@ def bank_webhook(request):
                 resolvida_em=timezone.now()
             )
             movimentacao.save()
-
-    # Handle the checkout.session.completed event
-    if event['type'] == 'checkout.session.completed':
-        checkout_session = event['data']['object']
-
-        create_movimentacao(checkout_session, Socio.objects.get(
-            stripe_customer_id=checkout_session['customer']))
 
     return HttpResponse(status=200)

@@ -1,6 +1,7 @@
 from django.http.response import HttpResponse
 import stripe
 from django.shortcuts import render
+from bank.models import Conta
 from ecommerce.models import Carrinho, Pagamento
 from django.conf import settings
 
@@ -44,5 +45,10 @@ def ecommerce_webhook(request):
         carrinho.save()
 
         pagamento.save()
+
+        conta, _ = Conta.objects.get_or_create(socio=carrinho.user.socio)
+        conta.calangos = int(
+            ((checkout_session['amount_total'] / 100) // 10) * 100)
+        conta.save()
 
     return HttpResponse(status=200)

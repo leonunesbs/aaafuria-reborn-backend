@@ -3,6 +3,7 @@ from django.http.response import HttpResponse
 import stripe
 from django.shortcuts import render
 from stripe.api_resources import checkout, customer
+from bank.models import Conta
 from core.models import Pagamento, Socio
 from datetime import datetime, timezone
 from django.conf import settings
@@ -48,8 +49,9 @@ def core_webhook(request):
             )
 
             if len(subscription.data) > 0:
-                socio.data_inicio = datetime.fromtimestamp(
-                    subscription.data[0]['current_period_start'])
+                if not socio.data_inicio:
+                    socio.data_inicio = datetime.fromtimestamp(
+                        subscription.data[0]['current_period_start'])
                 socio.data_fim = datetime.fromtimestamp(
                     subscription.data[0]['current_period_end'])
 
@@ -57,6 +59,11 @@ def core_webhook(request):
 
             socio.save()
             pagamento.save()
+
+            conta, _ = Conta.objects.get_or_create(socio=socio)
+            conta.calangos = int(
+                ((checkout_session['amount_total'] / 100) // 10) * 100)
+            conta.save()
 
     # Handle the customer.subscription.deleted event
     if event['type'] == 'customer.subscription.deleted':
