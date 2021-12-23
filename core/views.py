@@ -1,12 +1,12 @@
+from datetime import datetime
+from django.utils import timezone
+
+import stripe
+from bank.models import Conta
 from django.conf import settings
 from django.http.response import HttpResponse
-import stripe
-from django.shortcuts import render
-from stripe.api_resources import checkout, customer
-from bank.models import Conta
+
 from core.models import Pagamento, Socio
-from datetime import datetime, timezone
-from django.conf import settings
 
 
 # Stripe webhook handler

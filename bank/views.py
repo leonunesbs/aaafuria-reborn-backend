@@ -34,6 +34,8 @@ def bank_webhook(request):
             stripe_customer_id=checkout_session['customer'])
 
         aaafuria = Socio.objects.get(user__username="22238742")
+
+        Conta.objects.get_or_create(socio=aaafuria)[0].save()
         conta, _ = Conta.objects.get_or_create(socio=socio)
         conta.save()
 
