@@ -19,7 +19,7 @@ django-flat-theme==1.1.4
 django-graphql-jwt==0.3.4
 django-heroku==0.0.0
 django-storages==1.12.3
-graphene==2.1.9
+graphene==3.0
 graphene-django==2.15.0
 graphql-core==2.3.2
 graphql-relay==2.0.1
