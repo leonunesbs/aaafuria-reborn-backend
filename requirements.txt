@@ -36,7 +36,7 @@ PyJWT==2.3.0
 python-dateutil==2.8.2
 pytz==2021.3
 requests==2.26.0
-Rx==1.6.1
+Rx==3.2.0
 s3transfer==0.5.1
 singledispatch==3.7.0
 six==1.16.0
