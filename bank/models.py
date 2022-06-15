@@ -200,7 +200,7 @@ def recycle_payments(sender, instance, created, **kwargs):
         if payment.updated_at < timezone.now() - timezone.timedelta(days=3):
             payment.set_expired()
 
-        if payment.expired and not payment.paid:
+        if payment.expired and not payment.paid and payment.updated_at < timezone.now() - timezone.timedelta(days=7):
             cart = Cart.objects.filter(payment=payment).first()
             if cart:
                 if not cart.ordered:
