@@ -197,7 +197,10 @@ class Payment(models.Model):
 @receiver(models.signals.post_save, sender=Payment)
 def recycle_payments(sender, instance, created, **kwargs):
     for payment in Payment.objects.all():
-        if payment.expired and not payment.paid and payment.updated_at < timezone.now() - timezone.timedelta(days=1):
+        if payment.updated_at < timezone.now() - timezone.timedelta(days=3):
+            payment.set_expired()
+
+        if payment.expired and not payment.paid:
             cart = Cart.objects.filter(payment=payment).first()
             if cart:
                 if not cart.ordered:
