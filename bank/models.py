@@ -194,20 +194,15 @@ class Payment(models.Model):
         return refs[self.method.title]()
 
 
-'''
 @receiver(models.signals.post_save, sender=Payment)
 def recycle_payments(sender, instance, created, **kwargs):
     for payment in Payment.objects.all():
-        if payment.updated_at < timezone.now() - timezone.timedelta(days=3):
-            payment.set_expired(_('Payment expired'))
-
-        if payment.expired and not payment.paid and payment.updated_at < timezone.now() - timezone.timedelta(days=7):
+        if payment.expired and not payment.paid and payment.updated_at < timezone.now() - timezone.timedelta(days=1):
             cart = Cart.objects.filter(payment=payment).first()
             if cart:
                 if not cart.ordered:
                     cart.delete()
             payment.delete()
-'''
 
 
 class Attachment(models.Model):
