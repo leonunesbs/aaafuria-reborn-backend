@@ -36,8 +36,8 @@ class CreatePayment(graphene.Mutation):
         )
         if created and attachment and atttachment_title:
             payment.attachments.create(
-                title=kwargs.get('atttachment_title'),
-                file=kwargs.get('attachment'),
+                title=atttachment_title,
+                file=attachment,
             )
 
         return CreatePayment(payment=payment, payment_created=created)
