@@ -19,7 +19,7 @@ class CreatePayment(graphene.Mutation):
     payment = graphene.Field('bank.schema.nodes.PaymentNode')
     payment_created = graphene.Boolean()
 
-    def mutate(self, info, method_id, atttachment_title=None, attachment=None, user_username=None, **kwargs):
+    def mutate(self, info, method_id, user_username=None, **kwargs):
         user = info.context.user
         if not user.is_authenticated:
             raise GraphQLError(_('Unauthenticated.'))
@@ -34,9 +34,13 @@ class CreatePayment(graphene.Mutation):
             amount=kwargs.get('amount'),
             description=kwargs.get('description'),
         )
-        if created and attachment and atttachment_title:
+
+        attachment_title = kwargs.get('attachment_title')
+        attachment = kwargs.get('attachment')
+
+        if created and attachment and attachment_title:
             payment.attachments.create(
-                title=atttachment_title,
+                title=attachment_title,
                 file=attachment,
             )
 
