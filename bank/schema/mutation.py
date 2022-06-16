@@ -19,7 +19,7 @@ class CreatePayment(graphene.Mutation):
     payment = graphene.Field('bank.schema.nodes.PaymentNode')
     payment_created = graphene.Boolean()
 
-    def mutate(self, info, method_id, atttachment_title, attachment, user_username=None, **kwargs):
+    def mutate(self, info, method_id, atttachment_title=None, attachment=None, user_username=None, **kwargs):
         user = info.context.user
         if not user.is_authenticated:
             raise GraphQLError(_('Unauthenticated.'))
