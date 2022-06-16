@@ -23,7 +23,7 @@ class CreatePayment(graphene.Mutation):
         user = info.context.user
         if not user.is_authenticated:
             raise GraphQLError(_('Unauthenticated.'))
-        if user.is_staff:
+        if user.is_staff and user_username:
             user = User.objects.get(username=user_username)
 
         payment_method = PaymentMethod.objects.get(
