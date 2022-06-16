@@ -195,8 +195,11 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['user__member__name']
+
     def __str__(self) -> str:
-        return f'{self.user.username}'
+        return f'{self.user.member.name}'
 
     def deliver(self):
         self.delivered = True

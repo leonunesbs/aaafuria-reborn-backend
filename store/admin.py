@@ -19,7 +19,7 @@ class CartItemAdmin(admin.ModelAdmin):
                     'quantity', 'ordered', 'checked_out')
     list_filter = ('cart', 'item', 'ordered')
     search_fields = ('cart', 'item', 'cart__user__username',
-                     'cart__user__email')
+                     'cart__user__email', 'cart__user__member__name',)
 
 
 @admin.register(Cart)
@@ -31,5 +31,13 @@ class CartAdmin(admin.ModelAdmin):
         'checked_out',
         'created_at',
         'updated_at',
-
+    ]
+    list_filter = [
+        'ordered',
+        'checked_out',
+    ]
+    search_fields = [
+        'user__username',
+        'user__email',
+        'user__member__name',
     ]
