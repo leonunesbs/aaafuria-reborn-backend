@@ -194,6 +194,7 @@ class Payment(models.Model):
         return refs[self.method.title]()
 
 
+'''
 @receiver(models.signals.post_save, sender=Payment)
 def recycle_payments(sender, instance, created, **kwargs):
     for payment in Payment.objects.all():
@@ -206,6 +207,7 @@ def recycle_payments(sender, instance, created, **kwargs):
                 if not cart.ordered:
                     cart.delete()
             payment.delete()
+'''
 
 
 class Attachment(models.Model):
