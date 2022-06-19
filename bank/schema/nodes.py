@@ -1,6 +1,7 @@
 import graphene
 from bank.models import Attachment, Payment, PaymentMethod
 from graphene_django import DjangoObjectType
+from graphql_relay import to_global_id
 
 
 class PaymentMethodNode(DjangoObjectType):

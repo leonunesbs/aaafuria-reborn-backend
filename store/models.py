@@ -36,6 +36,12 @@ class Item(models.Model):
         null=True,
         help_text=_('Maximum number of items per member'),
     )
+    disabled_payment_methods = models.ManyToManyField(
+        'bank.PaymentMethod',
+        blank=True,
+        help_text=_(
+            'Payment methods that will not be available for this item.'),
+    )
 
     class Meta:
         ordering = ['is_variation']
