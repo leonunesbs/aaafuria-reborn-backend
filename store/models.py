@@ -31,6 +31,8 @@ class Item(models.Model):
         default=True, help_text=_('Should this item be sold in person?'))
     is_active = models.BooleanField(default=True)
 
+    membership_exclusive = models.BooleanField(
+        default=False, help_text=_('Should this item be sold only to members?'))
     max_per_member = models.PositiveIntegerField(
         blank=True,
         null=True,
