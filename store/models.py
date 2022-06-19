@@ -18,7 +18,7 @@ class Item(models.Model):
     staff_price = models.FloatField(blank=True, null=True)
 
     image = models.ImageField(
-        upload_to='store/images/items', blank=True, null=True, help_text=_('Image proportions: 1:1'))
+        upload_to='store/images/items', blank=True, null=True, help_text=_('Image ratio: 1:1'))
     stock = models.IntegerField(default=0)
 
     is_variation = models.BooleanField(default=False, editable=False)
