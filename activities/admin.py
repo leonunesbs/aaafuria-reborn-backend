@@ -6,6 +6,7 @@ from activities.models import Activity, Attachment, Category, Schedule
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'is_active']
+    filter_horizontal = ['first_team']
 
 
 @admin.register(Category)
