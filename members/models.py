@@ -4,7 +4,10 @@ from django.dispatch import receiver
 
 
 def get_description(self):
-    return f'({self.member.registration}) {self.member.name}'
+    if self.member:
+        return f'({self.member.registration}) {self.member.name}'
+    else:
+        return self.username
 
 
 User.add_to_class("__str__", get_description)
