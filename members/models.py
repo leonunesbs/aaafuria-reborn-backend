@@ -1,5 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
+
+
+def get_description(self):
+    return f'({self.member.registration}) {self.member.name}'
+
+
+User.add_to_class("__str__", get_description)
 
 
 def member_avatar_dir(instance, filename):
