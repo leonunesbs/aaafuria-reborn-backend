@@ -4,7 +4,8 @@ from django.dispatch import receiver
 
 
 def get_description(self):
-    if self.member:
+    member = Member.objects.filter(user=self).first()
+    if member:
         return f'({self.member.registration}) {self.member.name}'
     else:
         return self.username
