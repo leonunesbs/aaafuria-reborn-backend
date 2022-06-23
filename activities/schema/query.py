@@ -25,4 +25,4 @@ class Query(graphene.ObjectType):
         return Schedule.objects.get(id=id)
 
     def resolve_all_activities(self, info):
-        return Activity.objects.all()
+        return Activity.objects.filter(is_active=True)
