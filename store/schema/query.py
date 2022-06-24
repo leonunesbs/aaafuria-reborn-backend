@@ -50,6 +50,9 @@ class Query(graphene.ObjectType):
             return GraphQLError(_('Unauthorized.'))
 
         page_size = page_size
-        qs = Cart.objects.filter(ordered=True, delivered=False)
+        qs = Cart.objects.all()
+
+        if page_size == 0:
+            page_size = Cart.objects.all().count()
 
         return get_paginator(qs, page_size, page, CartPaginatedNode)
