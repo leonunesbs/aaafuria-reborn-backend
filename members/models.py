@@ -57,11 +57,9 @@ class Member(models.Model):
 
     @property
     def first_teamer(self):
-        from atividades.models import Modalidade
-        for modalidade in Modalidade.objects.all():
-            if not self.user.socio.competidor:
-                return False
-            if self.user.socio.competidor in modalidade.competidores.all():
+        from activities.models import Activity
+        for activity in Activity.objects.all():
+            if self.user in activity.first_team.all():
                 return True
         return False
 
