@@ -57,6 +57,7 @@ class CreateAccount(graphene.Mutation):
 
 class CreateIntermedProfile(graphene.Mutation):
     class Arguments:
+        nickname = graphene.String(required=True)
         avatar = Upload(required=True)
         vaccine_card = Upload(required=True)
         enroll = Upload(required=True)
@@ -85,7 +86,7 @@ class CreateIntermedProfile(graphene.Mutation):
                                  data={
                                      "name": member.name,
                                      "email": member.email,
-                                     "nickname": member.nickname,
+                                     "nickname": kwargs.get('nickname'),
                                      "password": member.registration,
                                      "birth_date": member.birth_date.strftime('%Y-%m-%d'),
                                      "rg": member.rg,
