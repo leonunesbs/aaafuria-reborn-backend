@@ -16,8 +16,8 @@ class Query(graphene.ObjectType):
     cart = graphene.Field('store.schema.nodes.CartNode',
                           user_username=graphene.String())
 
-    all_carts = graphene.Field(
-        'store.schema.nodes.CartPaginatedNode', page=graphene.Int(), page_size=graphene.Int())
+    all_carts = graphene.List(
+        'store.schema.nodes.CartNode')
 
     def resolve_analog_items(self, info, page=1):
         page_size = 10
@@ -41,7 +41,7 @@ class Query(graphene.ObjectType):
             user = User.objects.filter(username=user_username).first()
         return user.carts.filter(checked_out=False).first()
 
-    def resolve_all_carts(self, info, page=1, page_size=10):
+    def resolve_all_carts(self, info, *args, **kwargs):
         user = info.context.user
         if not user.is_authenticated:
             return GraphQLError(_('Unauthenticated.'))
@@ -49,10 +49,4 @@ class Query(graphene.ObjectType):
         if not user.is_staff:
             return GraphQLError(_('Unauthorized.'))
 
-        page_size = page_size
-        qs = Cart.objects.all()
-
-        if page_size == 0:
-            page_size = Cart.objects.all().count()
-
-        return get_paginator(qs, page_size, page, CartPaginatedNode)
+        return Cart.objects.all()
