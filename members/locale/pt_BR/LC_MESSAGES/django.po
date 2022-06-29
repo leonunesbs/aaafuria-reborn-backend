@@ -1,0 +1,56 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-29 15:28-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: members/schema/mutation.py:29
+msgid "All fields are required"
+msgstr "Todos os campos são obrigatórios"
+
+#: members/schema/mutation.py:32
+msgid "Username must be 8 characters"
+msgstr "Matrícula deve conter 8 caracteres"
+
+#: members/schema/mutation.py:34
+msgid "Password must be 6 characters"
+msgstr "PIN deve conter 6 caracteres"
+
+#: members/schema/mutation.py:36
+msgid "Username must be numeric"
+msgstr "Matrícula deve conter apenas números"
+
+#: members/schema/mutation.py:38
+msgid "Password must be numeric"
+msgstr "PIN deve conter apenas números"
+
+#: members/schema/mutation.py:69 members/schema/query.py:17
+#: members/schema/query.py:25
+msgid "Unauthenticated."
+msgstr "Não autenticado."
+
+#: members/schema/mutation.py:120
+msgid "Error signing in INTERMED."
+msgstr ""
+
+#: members/schema/mutation.py:129
+msgid "Error registering in INTERMED."
+msgstr ""
+
+#: members/schema/query.py:19 members/schema/query.py:27
+msgid "Unauthorized."
+msgstr "Não autorizado."

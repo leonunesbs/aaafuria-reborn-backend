@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-11 15:20-0300\n"
+"POT-Creation-Date: 2022-06-29 15:28-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: bank/schema.py:40
+#: bank/schema/mutation.py:25 bank/schema/query.py:30 bank/schema/query.py:45
+#: bank/schema/query.py:51
 msgid "Unauthenticated."
-msgstr ""
+msgstr "Não autenticado."
+
+#: bank/schema/mutation.py:71
+msgid "Payment not found"
+msgstr "Pagamento não encontrado"
+
+#: bank/schema/mutation.py:75 bank/schema/mutation.py:104
+#: bank/schema/mutation.py:123 bank/schema/mutation.py:141
+msgid "You are not allowed to do this action."
+msgstr "Você não está autorizado a realizar esta ação."
+
+#: bank/schema/mutation.py:100
+msgid "Attachment not found"
+msgstr "Anexo não encontrado"
+
+#: bank/schema/query.py:32
+msgid "Unauthorized."
+msgstr "Não autorizado."
+
+#: bank/views.py:38
+msgid "Subscription created"
+msgstr "Associação criada"
+
+#: bank/views.py:46
+msgid "Payment completed"
+msgstr "Pagamento concluído"

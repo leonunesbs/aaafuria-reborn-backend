@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-29 15:28-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: activities/models.py:15
+msgid "activity"
+msgstr "atividade"
+
+#: activities/models.py:16
+msgid "activities"
+msgstr "atividades"
+
+#: activities/models.py:27
+msgid "category"
+msgstr "categoria"
+
+#: activities/models.py:28
+msgid "categories"
+msgstr "categorias"
+
+#: activities/models.py:40
+msgid "Waiting"
+msgstr "Aguardando"
+
+#: activities/models.py:41
+msgid "Confirmed"
+msgstr "Confirmado"
+
+#: activities/models.py:42
+msgid "Ended"
+msgstr "Encerrado"
+
+#: activities/models.py:64
+msgid "schedule"
+msgstr "programação"
+
+#: activities/models.py:65
+msgid "schedules"
+msgstr "programações"
+
+#: activities/models.py:107
+msgid "attachment"
+msgstr "anexo"
+
+#: activities/models.py:108
+msgid "attachments"
+msgstr "anexos"
+
+#: activities/schema/mutation.py:21 activities/schema/mutation.py:49
+#: activities/schema/mutation.py:81 activities/schema/mutation.py:129
+#: activities/schema/mutation.py:158 activities/schema/mutation.py:178
+#: activities/schema/mutation.py:202
+msgid "Unauthenticated."
+msgstr "Não autenticado."
+
+#: activities/schema/mutation.py:84 activities/schema/mutation.py:132
+#: activities/schema/mutation.py:160 activities/schema/mutation.py:180
+#: activities/schema/mutation.py:204 activities/schema/query.py:20
+#: activities/schema/query.py:22
+msgid "Unauthorized."
+msgstr "Não autorizado."

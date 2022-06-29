@@ -17,9 +17,9 @@ class Query(graphene.ObjectType):
             return None
 
         if not info.context.user.is_authenticated:
-            raise GraphQLError(_('Unauthorized'))
+            raise GraphQLError(_('Unauthorized.'))
         if info.context.user.is_staff is False:
-            raise GraphQLError(_('Unauthorized'))
+            raise GraphQLError(_('Unauthorized.'))
 
         id = from_global_id(kwargs.get('schedule_id'))[1]
         return Schedule.objects.get(id=id)

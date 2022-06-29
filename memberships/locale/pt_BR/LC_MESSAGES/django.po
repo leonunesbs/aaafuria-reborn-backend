@@ -18,10 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ecommerce/schema.py:140
-msgid "Unauthenticated."
-msgstr "Não autenticado."
-
-#: ecommerce/schema.py:147
-msgid "Produto exclusivo!"
-msgstr "Produto exclusivo!"
+#: memberships/schema/mutation.py:32
+msgid "Subscription creation"
+msgstr "Associação criada"

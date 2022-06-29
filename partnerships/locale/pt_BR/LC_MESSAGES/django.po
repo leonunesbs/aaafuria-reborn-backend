@@ -18,10 +18,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ecommerce/schema.py:140
-msgid "Unauthenticated."
-msgstr "Não autenticado."
+#: partnerships/models.py:6
+msgid "name"
+msgstr "nome"
 
-#: ecommerce/schema.py:147
-msgid "Produto exclusivo!"
-msgstr "Produto exclusivo!"
+#: partnerships/models.py:7
+msgid "socio benefits"
+msgstr "benefícios de sócios"
+
+#: partnerships/models.py:9
+msgid "description"
+msgstr "descrição"
+
+#: partnerships/models.py:11
+msgid "logo"
+msgstr "logo"
+
+#: partnerships/models.py:12
+msgid "url"
+msgstr "url"
+
+#: partnerships/models.py:15
+msgid "partnership"
+msgstr "parceria"
+
+#: partnerships/models.py:16
+msgid "partnerships"
+msgstr "parcerias"
