@@ -1,17 +1,13 @@
 import requests
 import stripe
-from atividades.models import Competidor
 from decouple import config
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.template.loader import get_template
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from memberships.models import Attachment, MembershipPlan
 
 
 def socio_dir(instance, filename):
@@ -181,14 +177,6 @@ class Socio(models.Model):
                     'O campo Whatsapp não pode ser vazio.')
 
             self.whatsapp_url = f'https://wa.me/55{self.whatsapp}'
-
-    @property
-    def is_atleta(self):
-        if not Competidor.objects.filter(socio=self).exists():
-            return False
-        if self.competidor.modalidades.count() > 0:
-            return True
-        return False
 
     def adicionar_coupom_cheers(self):
         base = 180

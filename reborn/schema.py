@@ -1,11 +1,9 @@
 import activities.schema.mutation as activities_mutation
 import activities.schema.query as activities_query
-import atividades.schema
 import bank.schema.mutation as bank_mutation
 import bank.schema.query as bank_query
 import core.schema
 import ecommerce.schema
-import files.schema
 import graphene
 import graphql_jwt
 import help.schema
@@ -34,9 +32,7 @@ class UserNode(DjangoObjectType):
 class Query(
     core.schema.Query,
     ecommerce.schema.Query,
-    atividades.schema.Query,
     bank_query.Query,
-    files.schema.Query,
     help.schema.Query,
     partnerships.schema.Query,
     activities_query.Query,
@@ -65,9 +61,7 @@ class ObtainJSONWebToken(graphql_jwt.JSONWebTokenMutation):
 class Mutation(
     core.schema.Mutation,
     ecommerce.schema.Mutation,
-    atividades.schema.Mutation,
     bank_mutation.Mutation,
-    files.schema.Mutation,
     help.schema.Mutation,
     activities_mutation.Mutation,
     members_mutation.Mutation,
