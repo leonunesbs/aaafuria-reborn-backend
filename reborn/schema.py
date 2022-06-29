@@ -6,7 +6,6 @@ import core.schema
 import ecommerce.schema
 import graphene
 import graphql_jwt
-import help.schema
 import members.schema.mutation as members_mutation
 import members.schema.query as members_query
 import memberships.schema.mutation as memberships_mutation
@@ -33,7 +32,6 @@ class Query(
     core.schema.Query,
     ecommerce.schema.Query,
     bank_query.Query,
-    help.schema.Query,
     partnerships.schema.Query,
     activities_query.Query,
     members_query.Query,
@@ -62,7 +60,6 @@ class Mutation(
     core.schema.Mutation,
     ecommerce.schema.Mutation,
     bank_mutation.Mutation,
-    help.schema.Mutation,
     activities_mutation.Mutation,
     members_mutation.Mutation,
     memberships_mutation.Mutation,

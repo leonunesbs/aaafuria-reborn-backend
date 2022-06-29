@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'bank',
     'eventos',
 
-    'files',
     'help',
     'partnerships',
 
