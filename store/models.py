@@ -204,7 +204,7 @@ class Cart(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['user__member__name']
+        ordering = ['-updated_at']
 
     def __str__(self) -> str:
         return f'{self.user.member.name}'
