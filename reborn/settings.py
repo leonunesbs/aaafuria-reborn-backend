@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'core',
     'ecommerce',
     'bank',
-    'eventos',
 
     'partnerships',
 
