@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'bank',
     'eventos',
 
-    'help',
     'partnerships',
 
     # Refactored apps
