@@ -204,6 +204,8 @@ class DeliverCart(graphene.Mutation):
             raise GraphQLError(_('Cart not found'))
         if cart.ordered is False:
             raise GraphQLError(_('Cart is not ordered'))
+        if cart.delivered is True:
+            raise GraphQLError(_('Cart already delivered'))
 
         cart.deliver()
         cart.save()

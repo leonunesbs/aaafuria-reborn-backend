@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-29 15:28-0300\n"
+"POT-Creation-Date: 2022-06-30 16:27-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,6 +89,10 @@ msgstr "Não autorizado"
 #: store/schema/mutation.py:206
 msgid "Cart is not ordered"
 msgstr "Carrinho não pago"
+
+#: store/schema/mutation.py:208
+msgid "Cart already delivered"
+msgstr "Carrinho já entregue"
 
 #: store/schema/query.py:50
 msgid "Unauthorized."
