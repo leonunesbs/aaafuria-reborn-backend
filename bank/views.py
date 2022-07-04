@@ -68,7 +68,7 @@ def bank_webhook(request):
                     payment = Payment.objects.create(
                         user=member.user,
                         method=PaymentMethod.objects.get(title='ST'),
-                        amount=invoice['amount_paid'],
+                        amount=(float(invoice['amount_paid']) / 100),
                         description='Subscription cycle',
                     )
                     payment.attachments.create(
