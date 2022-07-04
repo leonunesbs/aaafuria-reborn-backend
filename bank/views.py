@@ -2,6 +2,10 @@ import stripe
 from django.conf import settings
 from django.http.response import HttpResponse
 from django.utils.translation import gettext as _
+from members.models import Attachment as MemberAttachment
+from members.models import Member
+from memberships.models import Attachment as MembershipAttachment
+from memberships.models import Membership, MembershipPlan
 
 from .models import Attachment, Payment, PaymentMethod
 
@@ -55,17 +59,37 @@ def bank_webhook(request):
             invoice = event['data']['object']
             if invoice['billing_reason'] == 'subscription_cycle':
                 if invoice['status'] == 'paid':
-                    membership = Attachment.objects.get(
-                        content=invoice['subscription']).membership
+                    member = MemberAttachment.objects.get(
+                        content=invoice['customer']).member
+
+                    plan_id = invoice['lines']['data'][0]['plan']['id']
+                    membership_plan = MembershipPlan.objects.get(ref=plan_id)
 
                     payment = Payment.objects.create(
-                        user=membership.member.user,
+                        user=member.user,
                         method=PaymentMethod.objects.get(title='ST'),
                         amount=invoice['amount_paid'],
-                        description=invoice['id'],
+                        description='Subscription cycle',
+                    )
+                    payment.attachments.create(
+                        title='invoice_id',
+                        content=invoice['id']
                     )
 
-                    membership.payment = payment
+                    membership = Membership.objects.create(
+                        ref=Membership.STRIPE,
+                        member=member,
+                        membership_plan=membership_plan,
+                        payment=payment,
+                        is_active=True
+                    )
+
+                    membership_attachment = MembershipAttachment.objects.get_or_create(
+                        title='stripe_subscription_id'
+                    )
+                    membership_attachment.content = invoice['subscription']
+                    membership_attachment.save()
+
                     membership.save()
 
                     payment.set_paid('Subscription cycle')
