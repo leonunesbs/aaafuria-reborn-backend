@@ -84,7 +84,7 @@ def bank_webhook(request):
                         is_active=True
                     )
 
-                    membership_attachment = membership.attachments.objects.get_or_create(
+                    membership_attachment, created = membership.attachments.get_or_create(
                         title='stripe_subscription_id'
                     )
                     membership_attachment.content = invoice['subscription']
