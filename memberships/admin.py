@@ -20,4 +20,4 @@ class MembershipPlanAdmin(admin.ModelAdmin):
 class AttachmentAdmin(admin.ModelAdmin):
     list_display = ('title', 'content', 'membership')
     search_fields = ('membership__member__email',
-                     'membership__member__name', 'membership__member__registration',)
+                     'membership__member__name', 'membership__member__registration', 'title', 'content')
