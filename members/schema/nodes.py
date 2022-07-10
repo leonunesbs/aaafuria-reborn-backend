@@ -12,6 +12,7 @@ class MemberNode(DjangoObjectType):
     active_membership = graphene.Field(
         'memberships.schema.nodes.MembershipNode')
     billing_portal_url = graphene.String()
+    whatsapp_url = graphene.String()
 
     class Meta:
         model = Member
@@ -31,3 +32,6 @@ class MemberNode(DjangoObjectType):
     def resolve_avatar(self, info, *args, **kwargs):
         if self.avatar:
             return info.context.build_absolute_uri(self.avatar.url)
+
+    def resolve_whatsapp_url(self, info, *args, **kwargs):
+        return f'https://wa.me/55{self.phone}'
