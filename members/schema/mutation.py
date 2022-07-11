@@ -121,7 +121,7 @@ class CreateIntermedProfile(graphene.Mutation):
 
         response = requests.post('http://intermednordeste.com/api/event/registerTicket',
                                  data={
-                                     "id_batch": 7,
+                                     "id_batch": 8,
                                  }, headers={
                                      "Authorization": f'Bearer {JWT}'})
 
