@@ -172,7 +172,7 @@ class CheckoutCart(graphene.Mutation):
                     'tax_rates': ['txr_1KT7puH8nuTtWMpP8U05kbNZ']
                 } for item in cart.items.all()
             ],
-            payment_method_types=['card', 'pix']
+            payment_method_types=['card']
         )
 
         if checkout['url'] is None:
