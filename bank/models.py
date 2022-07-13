@@ -132,7 +132,7 @@ class Payment(models.Model):
             cart.refresh()
             cart.save()
 
-    def checkout(self, mode, items, discounts=[], **kwargs):
+    def checkout(self, mode, items, discounts=[], payment_method_types=['card'], **kwargs):
         def stripe():
             import stripe
             stripe.api_key = API_KEY
@@ -144,7 +144,7 @@ class Payment(models.Model):
                 line_items=items,
                 mode=mode,
                 discounts=discounts,
-                payment_method_types=['card'],
+                payment_method_types=payment_method_types,
                 expires_at=timezone.now() + timezone.timedelta(minutes=60)
             )
 
