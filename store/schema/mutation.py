@@ -163,7 +163,7 @@ class CheckoutCart(graphene.Mutation):
 
         checkout = payment.checkout(
             mode='payment',
-            items=[
+            line_items=[
                 {
                     'name': str(item),
                     'quantity': item.quantity,
