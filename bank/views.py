@@ -146,6 +146,6 @@ def bank_webhook(request):
             payment.set_paid(_('Payment completed'))
             return HttpResponse(status=200)
 
-        return HttpResponse(status=200)
+        return HttpResponse(status=201)
 
     return HttpResponse(status=204)
