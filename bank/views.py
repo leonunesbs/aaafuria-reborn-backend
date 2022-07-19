@@ -127,22 +127,13 @@ def bank_webhook(request):
 
         headers = {
             "Accept": "application/xml",
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json"
         }
 
         response = requests.get(url, headers=headers)
 
-        string_xml = response.content
-        xml_tree = ElementTree.fromstring(string_xml)
+        print(response)
 
-        obj = xmltodict.parse(ElementTree.tostring(
-            xml_tree, encoding='utf8').decode('utf8'))
-
-        if 'errors' in obj:
-            return print(obj)
-
-        print(obj)
-
-        return HttpResponse(status=200)
+        return HttpResponse(status=200, content=response)
 
     return HttpResponse(status=204)
