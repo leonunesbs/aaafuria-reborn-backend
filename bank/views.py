@@ -125,7 +125,7 @@ def bank_webhook(request):
     if 'notificationType' in request.POST and request.POST['notificationType'] == 'transaction':
         notification_code = request.POST['notificationCode']
 
-        url = f"https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}?email=leonunesbs.dev@gmail.com&token={config('PAGSEGURO_TOKEN')}"
+        url = f"https://ws.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}?email=leonunesbs.dev@gmail.com&token={config('PAGSEGURO_TOKEN')}"
 
         response = requests.get(url)
 

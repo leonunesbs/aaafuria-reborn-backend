@@ -169,7 +169,7 @@ class Payment(models.Model):
             import requests
             import xmltodict
 
-            url = f'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout?email=leonunesbs.dev@gmail.com&token={config("PAGSEGURO_TOKEN")}'
+            url = f'https://ws.pagseguro.uol.com.br/v2/checkout?email=leonunesbs.dev@gmail.com&token={config("PAGSEGURO_TOKEN")}'
 
             headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -211,7 +211,7 @@ class Payment(models.Model):
             checkout_code = obj['checkout']['code']
 
             return {
-                'url': f"https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={checkout_code}"
+                'url': f"https://pagseguro.uol.com.br/v2/checkout/payment.html?code={checkout_code}"
             }
 
         refs = {
