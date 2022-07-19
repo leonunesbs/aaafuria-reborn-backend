@@ -132,6 +132,8 @@ def bank_webhook(request):
         string_xml = response.text
         xml_tree = ElementTree.fromstring(string_xml)
 
+        return HttpResponse(status=400, content=string_xml)
+
         obj = xmltodict.parse(ElementTree.tostring(
             xml_tree, encoding='utf8').decode('utf8'))
 
@@ -145,7 +147,5 @@ def bank_webhook(request):
             payment = Payment.objects.get(pk=from_global_id(reference)[1])
             payment.set_paid(_('Payment completed'))
             return HttpResponse(status=200)
-
-        return HttpResponse(status=201)
 
     return HttpResponse(status=204)
