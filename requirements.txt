@@ -9,7 +9,7 @@ charset-normalizer==2.0.12
 coverage==6.3.2
 dj-database-url==0.5.0
 Django==3.2.13
-django-admin-interface==0.18.7
+django-admin-interface==0.19.1
 django-colorfield==0.5.0
 django-cors-headers==3.10.0
 django-decouple==2.1
