@@ -162,9 +162,52 @@ class Payment(models.Model):
                 'url': f"https://aaafuria.site/bank/payment/{to_global_id('bank.schema.nodes.PaymentNode', self.pk)}"
             }
 
+        def pagseguro():
+            from xml.etree import ElementTree
+
+            import requests
+            import xmltodict
+
+            url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout?email=leonunesbs.dev@gmail.com&token=737546B70DEA48B2BFC3DAD0CB915F63'
+
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+
+            payload = {
+                'email': 'leonunesbs.dev@gmail.com',
+                'token': '737546B70DEA48B2BFC3DAD0CB915F63',
+                'currency': 'BRL',
+                'itemId1': '0001',
+                'itemDescription1': 'Notebook Prata',
+                'itemAmount1': '100.00',
+                'itemQuantity1': 1,
+                'itemWeight1': 1000,
+                'extraAmount': -0.01,
+                'shippingAddressRequired': 'false',
+                'redirectURL': 'http://www.seusite.com.br',
+                'notificationURL': 'https://yourserver.com/nas_ecommerce/277be731-3b7c-4dac-8c4e-  4c3f4a1fdc46/',
+                'maxUses': 1,
+                'maxAge': 3000,
+                'shippingCost': '1.00'
+            }
+
+            response = requests.post(url, data=payload, headers=headers)
+            string_xml = response.content
+            xml_tree = ElementTree.fromstring(string_xml)
+
+            obj = xmltodict.parse(ElementTree.tostring(
+                xml_tree, encoding='utf8').decode('utf8'))
+            checkout_code = obj['checkout']['code']
+
+            return {
+                'url': f"https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={checkout_code}"
+            }
+
         refs = {
             'ST': stripe,
             'PX': pix,
+            'PS': pagseguro,
         }
 
         return refs[self.method.title]()
