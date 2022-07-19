@@ -14,14 +14,11 @@ from .models import Attachment, Payment, PaymentMethod
 def bank_webhook(request):
     endpoint_secret = settings.BANK_WEBHOOK_SECRET
     payload = request.body
-    sig_header = request.META['HTTP_STRIPE_SIGNATURE'] if 'HTTP_STRIPE_SIGNATURE' in request.META else None
+    sig_header = None
     event = None
 
-    string_xml = request.content
-    xml_tree = ElementTree.fromstring(string_xml)
-
-    obj = xmltodict.parse(ElementTree.tostring(
-        xml_tree, encoding='utf8').decode('utf8'))
+    if 'HTTP_STRIPE_SIGNATURE' in request.META:
+        sig_header = request.META['HTTP_STRIPE_SIGNATURE']
 
     if sig_header:
         try:
@@ -122,6 +119,6 @@ def bank_webhook(request):
         except Exception as e:
             return HttpResponse(content=e, status=400)
 
-    print(obj)
+    print(request)
 
     return False
