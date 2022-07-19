@@ -43,6 +43,49 @@ class CreatePayment(graphene.Mutation):
         return CreatePayment(payment=payment, payment_created=created)
 
 
+class ItemObject(graphene.InputObjectType):
+    name = graphene.String()
+    amount = graphene.Int()
+    quantity = graphene.Int()
+
+
+class CheckoutPayment(graphene.Mutation):
+
+    class Arguments:
+        payment_id = graphene.ID(required=True)
+        items = graphene.List(ItemObject)
+        user_username = graphene.String()
+
+    ok = graphene.Boolean()
+    checkout_url = graphene.String()
+
+    def mutate(self, info, payment_id, items=[], user_username=None):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise GraphQLError(_('Unauthenticated.'))
+        if user.is_staff and user_username:
+            user = User.objects.get(username=user_username)
+
+        payment = Payment.objects.get(pk=from_global_id(payment_id)[1])
+
+        checkout = payment.checkout(
+            mode='payment',
+            items=[
+                {
+                    'name': item.name,
+                    'quantity': item.quantity,
+                    'currency': 'brl',
+                    'amount': item.amount,
+                } for item in items
+            ],
+        )
+        if checkout['url'] is None:
+            payment.set_expired('Checkout failed')
+            payment.save()
+
+        return CheckoutPayment(ok=True, checkout_url=checkout['url'])
+
+
 class CheckoutUrl(graphene.Mutation):
     class Arguments:
         payment_id = graphene.ID(required=True)
@@ -148,6 +191,7 @@ class CancelPayment(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_payment = CreatePayment.Field()
+    checkout_payment = CheckoutPayment.Field()
     checkout_url = CheckoutUrl.Field()
     create_attachment = CreateAttachment.Field()
     delete_attachment = DeleteAttachment.Field()
