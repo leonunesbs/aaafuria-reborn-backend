@@ -135,8 +135,8 @@ def bank_webhook(request):
             xml_tree, encoding='utf8').decode('utf8'))
 
         if 'errors' in obj:
-            return print(obj)
+            return HttpResponse(status=400, content=obj['errors'])
 
-        return HttpResponse(status=200, content=obj)
+        return HttpResponse(status=200, content=string_xml)
 
     return HttpResponse(status=204)
