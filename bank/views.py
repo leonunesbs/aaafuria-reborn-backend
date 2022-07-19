@@ -141,8 +141,11 @@ def bank_webhook(request):
         status = obj['transaction']['status']
 
         if status == '3':
+            transaction_code = obj['transaction']['code']
             reference = obj['transaction']['reference']
             payment = Payment.objects.get(pk=from_global_id(reference)[1])
+            payment.attachments.create(
+                title='pagseguro_transaction_code', content=transaction_code)
             payment.set_paid(_('Payment completed'))
             return HttpResponse(status=200)
 
