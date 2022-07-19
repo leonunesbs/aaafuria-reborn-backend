@@ -168,7 +168,7 @@ class CheckoutCart(graphene.Mutation):
                     'name': str(item),
                     'quantity': item.quantity,
                     'currency': 'brl',
-                    'amount': int(item.get_sub_total() * 100),
+                    'amount': float(item.get_sub_total() * 100),
                     'tax_rates': ['txr_1KT7puH8nuTtWMpP8U05kbNZ']
                 } for item in cart.items.all()
             ],
