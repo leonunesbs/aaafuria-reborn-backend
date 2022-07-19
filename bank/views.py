@@ -1,5 +1,8 @@
+from xml.etree import ElementTree
+
 import requests
 import stripe
+import xmltodict
 from decouple import config
 from django.conf import settings
 from django.http.response import HttpResponse
@@ -121,9 +124,23 @@ def bank_webhook(request):
     if 'notificationType' in request.POST and request.POST['notificationType'] == 'transaction':
         notification_code = request.POST['notificationCode']
 
-        url = f"https://ws.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}?email=leonunesbs.dev@gmail.com&token={config('PAGSEGURO_TOKEN')}"
+        url = f"https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}?email=leonunesbs.dev@gmail.com&token={config('PAGSEGURO_TOKEN')}"
 
-        response = requests.get(url)
+        headers = {
+            "Accept": "application/xml",
+            "Content-Type": "application/json"
+        }
+
+        response = requests.get(url, headers=headers)
+
+        string_xml = response.content
+        xml_tree = ElementTree.fromstring(string_xml)
+
+        obj = xmltodict.parse(ElementTree.tostring(
+            xml_tree, encoding='utf8').decode('utf8'))
+
+        if 'errors' in obj:
+            return print(obj)
 
         print(response)
 
