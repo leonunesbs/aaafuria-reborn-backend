@@ -137,6 +137,15 @@ def bank_webhook(request):
         if 'errors' in obj:
             return HttpResponse(status=400, content=obj['errors'])
 
-        return HttpResponse(status=200, content=string_xml)
+        status = obj['transaction']['status']
+        transaction_code = obj['transaction']['code']
+
+        if status == 3:
+            payment = Attachment.objects.get(
+                content=transaction_code).payment
+            payment.set_paid(_('Payment completed'))
+            return HttpResponse(status=200)
+
+        return HttpResponse(status=200)
 
     return HttpResponse(status=204)
