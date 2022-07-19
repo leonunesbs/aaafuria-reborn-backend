@@ -176,6 +176,7 @@ class Payment(models.Model):
             }
 
             count = 1
+            total = 0
             items_obj = {}
             for item in items:
                 items_obj[f'itemId{count}'] = count
@@ -184,7 +185,9 @@ class Payment(models.Model):
                     item['amount'] / 100),
                 items_obj[f'itemQuantity{count}'] = item['quantity']
                 items_obj[f'itemWeight{count}'] = 1000
+
                 count += 1
+                total += float(item['amount'] / 100)
 
             payload = {
                 'currency': 'BRL',
@@ -195,7 +198,8 @@ class Payment(models.Model):
                 'maxAge': 3000,
                 'timeout': 20,
                 'shippingCost': '1.00',
-                'reference': to_global_id('bank.schema.nodes.PaymentNode', self.pk)
+                'reference': to_global_id('bank.schema.nodes.PaymentNode', self.pk),
+                'extraAmount': '%.2f' % float(total * 0.045)
             } | items_obj
 
             response = requests.post(url, data=payload, headers=headers)
