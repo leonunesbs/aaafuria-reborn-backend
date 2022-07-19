@@ -121,4 +121,4 @@ def bank_webhook(request):
 
     print(request)
 
-    return False
+    return HttpResponse(status=400)
