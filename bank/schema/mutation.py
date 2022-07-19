@@ -28,19 +28,21 @@ class CreatePayment(graphene.Mutation):
 
         payment_method = PaymentMethod.objects.get(
             pk=from_global_id(method_id)[1])
-        payment, created = Payment.objects.get_or_create(
+        payment = Payment.objects.create(
             user=user,
             method=payment_method,
             amount=kwargs.get('amount'),
             description=kwargs.get('description'),
         )
-        if created and attachment and atttachment_title:
+        if attachment and atttachment_title:
             payment.attachments.create(
                 title=atttachment_title,
                 file=attachment,
             )
 
-        return CreatePayment(payment=payment, payment_created=created)
+        payment_created = True if payment else False
+
+        return CreatePayment(payment=payment, payment_created=payment_created)
 
 
 class ItemObject(graphene.InputObjectType):
