@@ -190,6 +190,13 @@ class Payment(models.Model):
                 total += float(item['amount'] / 100)
 
             payload = {
+                'senderName': self.user.member.name,
+                'senderAreaCode': self.user.member.phone[:2],
+                'senderPhone': self.user.member.phone[3:],
+                'senderCPF': self.user.member.cpf,
+                'senderBornDate': self.user.member.birth_date.strftime('%d/%m/%Y'),
+                'senderEmail': self.user.member.email,
+
                 'currency': 'BRL',
                 'shippingAddressRequired': 'false',
                 'redirectURL': 'https://aaafuria.site',
