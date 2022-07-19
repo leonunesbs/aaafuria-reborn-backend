@@ -175,8 +175,6 @@ class Payment(models.Model):
             }
 
             payload = {
-                'email': 'leonunesbs.dev@gmail.com',
-                'token': '737546B70DEA48B2BFC3DAD0CB915F63',
                 'currency': 'BRL',
                 'itemId1': '0001',
                 'itemDescription1': 'Notebook Prata',
@@ -184,9 +182,9 @@ class Payment(models.Model):
                 'itemQuantity1': 1,
                 'itemWeight1': 1000,
                 'extraAmount': -0.01,
-                'shippingAddressRequired': 'false',
-                'redirectURL': 'http://www.seusite.com.br',
-                'notificationURL': 'https://yourserver.com/nas_ecommerce/277be731-3b7c-4dac-8c4e-  4c3f4a1fdc46/',
+                'shippingAddressRequired': 'False',
+                'redirectURL': 'https://aaafuria.site',
+                'notificationURL': 'https://backend.aaafuria.site/bank/wh',
                 'maxUses': 1,
                 'maxAge': 3000,
                 'shippingCost': '1.00'
