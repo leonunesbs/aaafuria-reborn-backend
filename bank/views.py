@@ -14,7 +14,7 @@ from .models import Attachment, Payment, PaymentMethod
 def bank_webhook(request):
     endpoint_secret = settings.BANK_WEBHOOK_SECRET
     payload = request.body
-    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE'] if 'HTTP_STRIPE_SIGNATURE' in request.META else None
     event = None
 
     string_xml = request.content
