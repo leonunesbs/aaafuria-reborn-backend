@@ -1,3 +1,4 @@
+from decouple import config
 from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
@@ -168,27 +169,34 @@ class Payment(models.Model):
             import requests
             import xmltodict
 
-            url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout?email=leonunesbs.dev@gmail.com&token=737546B70DEA48B2BFC3DAD0CB915F63'
+            url = f'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout?email=leonunesbs.dev@gmail.com&token={config("PAGSEGURO_TOKEN")}'
 
             headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
 
+            count = 1
+            items_obj = {}
+            for item in items:
+                items_obj[f'itemId{count}'] = count
+                items_obj[f'itemDescription{count}'] = item['name']
+                items_obj[f'itemAmount{count}'] = '%.2f' % float(
+                    item['amount'] / 100),
+                items_obj[f'itemQuantity{count}'] = item['quantity']
+                items_obj[f'itemWeight{count}'] = 1000
+                count += 1
+
             payload = {
                 'currency': 'BRL',
-                'itemId1': '0001',
-                'itemDescription1': 'Notebook Prata',
-                'itemAmount1': '100.00',
-                'itemQuantity1': 1,
-                'itemWeight1': 1000,
-                'extraAmount': -0.01,
-                'shippingAddressRequired': 'False',
+                'shippingAddressRequired': 'false',
                 'redirectURL': 'https://aaafuria.site',
-                'notificationURL': 'https://backend.aaafuria.site/bank/wh',
+                'notificationURL': 'https://backend.aaafuria.site/bank/wh/',
                 'maxUses': 1,
                 'maxAge': 3000,
-                'shippingCost': '1.00'
-            }
+                'timeout': 20,
+                'shippingCost': '1.00',
+                'reference': to_global_id('bank.schema.nodes.PaymentNode', self.pk)
+            } | items_obj
 
             response = requests.post(url, data=payload, headers=headers)
             string_xml = response.content
@@ -196,7 +204,17 @@ class Payment(models.Model):
 
             obj = xmltodict.parse(ElementTree.tostring(
                 xml_tree, encoding='utf8').decode('utf8'))
-            checkout_code = obj['checkout']['code']
+
+            if 'errors' in obj:
+                return print(obj)
+
+            checkout = obj['checkout']
+            checkout_code = checkout['code']
+
+            attachment, created = Attachment.objects.get_or_create(
+                payment=self, title='pagseguro_checkout_code')
+            attachment.content = checkout_code
+            attachment.save()
 
             return {
                 'url': f"https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={checkout_code}"
