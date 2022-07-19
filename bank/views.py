@@ -126,12 +126,7 @@ def bank_webhook(request):
 
         url = f"https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}?email=leonunesbs.dev@gmail.com&token={config('PAGSEGURO_TOKEN')}"
 
-        headers = {
-            "Accept": "application/xml",
-            "Content-Type": "application/json"
-        }
-
-        response = requests.get(url, headers=headers)
+        response = requests.get(url)
 
         print(response)
 
