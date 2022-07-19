@@ -1,4 +1,3 @@
-from difflib import restore
 from xml.etree import ElementTree
 
 import requests
@@ -128,7 +127,7 @@ def bank_webhook(request):
 
         headers = {
             "Accept": "application/xml",
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded",
         }
 
         response = requests.get(url, headers=headers)
