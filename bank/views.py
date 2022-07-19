@@ -1,5 +1,7 @@
+from difflib import restore
 from xml.etree import ElementTree
 
+import requests
 import stripe
 import xmltodict
 from django.conf import settings
@@ -119,4 +121,29 @@ def bank_webhook(request):
         except Exception as e:
             return HttpResponse(content=e, status=400)
 
-    return HttpResponse(status=400, content=request.POST)
+    if 'notificationType' in request.POST and request.POST['notificationType'] == 'transaction':
+        notification_code = request.POST['notificationCode']
+
+        url = f"https://ws.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}"
+
+        headers = {
+            "Accept": "application/xml",
+            "Content-Type": "application/json"
+        }
+
+        response = requests.get(url, headers=headers)
+
+        string_xml = response.content
+        xml_tree = ElementTree.fromstring(string_xml)
+
+        obj = xmltodict.parse(ElementTree.tostring(
+            xml_tree, encoding='utf8').decode('utf8'))
+
+        if 'errors' in obj:
+            return print(obj)
+
+        print(obj)
+
+        return HttpResponse(status=200)
+
+    return HttpResponse(status=204)
