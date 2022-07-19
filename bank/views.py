@@ -7,6 +7,7 @@ from decouple import config
 from django.conf import settings
 from django.http.response import HttpResponse
 from django.utils.translation import gettext as _
+from graphql_relay import from_global_id
 from members.models import Attachment as MemberAttachment
 from memberships.models import Membership, MembershipPlan
 
@@ -131,8 +132,6 @@ def bank_webhook(request):
         string_xml = response.text
         xml_tree = ElementTree.fromstring(string_xml)
 
-        return HttpResponse(status=200, content=string_xml)
-
         obj = xmltodict.parse(ElementTree.tostring(
             xml_tree, encoding='utf8').decode('utf8'))
 
@@ -140,11 +139,10 @@ def bank_webhook(request):
             return HttpResponse(status=400, content=obj['errors'])
 
         status = obj['transaction']['status']
-        transaction_code = obj['transaction']['code']
 
         if status == 3:
-            payment = Attachment.objects.get(
-                content=transaction_code).payment
+            reference = obj['transaction']['reference']
+            payment = Payment.objects.get(pk=from_global_id(reference)[1])
             payment.set_paid(_('Payment completed'))
             return HttpResponse(status=200)
 
