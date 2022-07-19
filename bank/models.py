@@ -206,7 +206,8 @@ class Payment(models.Model):
                 'timeout': 20,
                 'shippingCost': '1.00',
                 'reference': to_global_id('bank.schema.nodes.PaymentNode', self.pk),
-                'extraAmount': '%.2f' % float(total * 0.045)
+                'extraAmount': '%.2f' % float(total * 0.045),
+                'excludePaymentMethodGroup': 'BOLETO'
             } | items_obj
 
             response = requests.post(url, data=payload, headers=headers)
@@ -258,7 +259,7 @@ class Payment(models.Model):
         return refs[self.method.title]()
 
 
-@receiver(models.signals.post_save, sender=Payment)
+@ receiver(models.signals.post_save, sender=Payment)
 def recycle_payments(sender, instance, created, **kwargs):
     for payment in Payment.objects.all():
         if payment.expired and not payment.paid and payment.updated_at < timezone.now() - timezone.timedelta(days=1):

@@ -149,4 +149,10 @@ def bank_webhook(request):
             payment.set_paid(_('Payment completed'))
             return HttpResponse(status=200)
 
+        if status == '4':
+            reference = obj['transaction']['reference']
+            payment = Payment.objects.get(pk=from_global_id(reference)[1])
+            payment.set_expired(_('Payment expired'))
+            return HttpResponse(status=200)
+
     return HttpResponse(status=204)
