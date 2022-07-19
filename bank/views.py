@@ -119,4 +119,4 @@ def bank_webhook(request):
         except Exception as e:
             return HttpResponse(content=e, status=400)
 
-    return HttpResponse(status=400, content=request['parameters'])
+    return HttpResponse(status=400, content=request.POST)
