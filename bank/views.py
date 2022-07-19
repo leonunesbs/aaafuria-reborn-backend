@@ -1,8 +1,5 @@
-from xml.etree import ElementTree
-
 import requests
 import stripe
-import xmltodict
 from django.conf import settings
 from django.http.response import HttpResponse
 from django.utils.translation import gettext as _
@@ -125,12 +122,7 @@ def bank_webhook(request):
 
         url = f"https://ws.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}"
 
-        headers = {
-            "Accept": "application/xml",
-            "Content-Type": "application/json"
-        }
-
-        response = requests.get(url, headers=headers)
+        response = requests.get(url)
 
         print(response)
 
