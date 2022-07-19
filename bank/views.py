@@ -1,5 +1,6 @@
 import requests
 import stripe
+from decouple import config
 from django.conf import settings
 from django.http.response import HttpResponse
 from django.utils.translation import gettext as _
@@ -120,7 +121,7 @@ def bank_webhook(request):
     if 'notificationType' in request.POST and request.POST['notificationType'] == 'transaction':
         notification_code = request.POST['notificationCode']
 
-        url = f"https://ws.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}"
+        url = f"https://ws.pagseguro.uol.com.br/v3/transactions/notifications/{notification_code}?email=leonunesbs.dev@gmail.com&token={config('PAGSEGURO_TOKEN')}"
 
         response = requests.get(url)
 
