@@ -222,6 +222,9 @@ class Payment(models.Model):
 
             checkout_code = obj['checkout']['code']
 
+            self.attachments.create(
+                title='pagseguro_checkout_code', content=checkout_code)
+
             return {
                 'url': f"https://pagseguro.uol.com.br/v2/checkout/payment.html?code={checkout_code}"
             }
@@ -239,8 +242,8 @@ class Payment(models.Model):
             import stripe
             stripe.api_key = API_KEY
 
-            attachment = Attachment.objects.filter(payment=self,
-                                                   title='stripe_checkout_session_id').first()
+            attachment = self.attachments.filter(
+                title='stripe_checkout_session_id').first()
             if attachment:
                 stripe_checkout_id = attachment.content
                 checkout_session = stripe.checkout.Session.retrieve(
@@ -251,15 +254,26 @@ class Payment(models.Model):
 
         def pix():
             return f"https://aaafuria.site/bank/payment/{to_global_id('bank.schema.nodes.PaymentNode', self.pk)}"
+
+        def pagseguro():
+            attachment = self.attachments.filter(
+                title='pagseguro_checkout_code').first()
+
+            if attachment:
+                return f"https://pagseguro.uol.com.br/v2/checkout/payment.html?code={attachment.content}"
+
+            return f"https://aaafuria.site/bank/payment/{to_global_id('bank.schema.nodes.PaymentNode', self.pk)}"
+
         refs = {
             'ST': stripe,
-            'PX': pix
+            'PX': pix,
+            'PS': pagseguro
         }
 
         return refs[self.method.title]()
 
 
-@ receiver(models.signals.post_save, sender=Payment)
+@receiver(models.signals.post_save, sender=Payment)
 def recycle_payments(sender, instance, created, **kwargs):
     for payment in Payment.objects.all():
         if payment.expired and not payment.paid and payment.updated_at < timezone.now() - timezone.timedelta(days=1):
