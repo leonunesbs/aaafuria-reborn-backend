@@ -208,13 +208,7 @@ class Payment(models.Model):
             if 'errors' in obj:
                 return print(obj)
 
-            checkout = obj['checkout']
-            checkout_code = checkout['code']
-
-            attachment, created = Attachment.objects.get_or_create(
-                payment=self, title='pagseguro_checkout_code')
-            attachment.content = checkout_code
-            attachment.save()
+            checkout_code = obj['checkout']['code']
 
             return {
                 'url': f"https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={checkout_code}"
