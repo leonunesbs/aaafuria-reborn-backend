@@ -133,15 +133,6 @@ def bank_webhook(request):
 
         response = requests.get(url, headers=headers)
 
-        string_xml = response.content
-        xml_tree = ElementTree.fromstring(string_xml)
-
-        obj = xmltodict.parse(ElementTree.tostring(
-            xml_tree, encoding='utf8').decode('utf8'))
-
-        if 'errors' in obj:
-            return print(obj)
-
         print(response)
 
         return HttpResponse(status=200, content=response)
