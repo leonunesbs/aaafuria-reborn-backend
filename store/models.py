@@ -29,10 +29,18 @@ class Item(models.Model):
         default=True, help_text=_('Should this item be sold online?'))
     is_analog = models.BooleanField(
         default=True, help_text=_('Should this item be sold in person?'))
+    is_event = models.BooleanField(
+        default=False, help_text=_('Is this item an event?'))
+
     is_active = models.BooleanField(default=True)
 
     membership_exclusive = models.BooleanField(
         default=False, help_text=_('Should this item be sold only to members?'))
+    max_per_user = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        help_text=_('Maximum number of items per user'),
+    )
     max_per_member = models.PositiveIntegerField(
         blank=True,
         null=True,
@@ -76,36 +84,6 @@ class Item(models.Model):
         self.is_variation = self.get_is_variation()
 
         super().save(*args, **kwargs)
-
-        if self.membership_price:
-            attach, created = self.attachments.get_or_create(
-                title='membership_price')
-            attach.content = self.membership_price
-            attach.save()
-        else:
-            self.attachments.filter(title='membership_price').delete()
-        if self.staff_price:
-            attach, created = self.attachments.get_or_create(
-                title='staff_price')
-            attach.content = self.staff_price
-            attach.save()
-        else:
-            self.attachments.filter(title='staff_price').delete()
-        if self.stock:
-            attach, created = self.attachments.get_or_create(
-                title='stock')
-            attach.content = self.stock
-            attach.save()
-        else:
-            self.attachments.filter(title='stock').delete()
-
-        if self.max_per_member:
-            attach, created = self.attachments.get_or_create(
-                title='max_per_member')
-            attach.content = self.max_per_member
-            attach.save()
-        else:
-            self.attachments.filter(title='max_per_member').delete()
 
 
 @receiver(models.signals.post_save, sender=Item)
@@ -190,6 +168,30 @@ class CartItem(models.Model):
         return total
 
 
+class Ticket(models.Model):
+    cart = models.ForeignKey(
+        'store.Cart', on_delete=models.CASCADE, related_name='tickets')
+    title = models.CharField(max_length=255)
+    remaining_uses = models.IntegerField(default=1)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f'{str(self.cart)} [{self.title}]'
+
+    @property
+    def paid(self) -> bool:
+        return self.cart.ordered
+
+    def is_valid(self) -> bool:
+        return True if self.remaining_uses > 0 else False
+
+    def use(self):
+        self.remaining_uses -= 1
+        self.save()
+
+
 class Cart(models.Model):
     user = models.ForeignKey(
         'auth.User', on_delete=models.CASCADE, related_name='carts')
@@ -248,3 +250,14 @@ class Cart(models.Model):
         for cart_item in self.items.all():
             total += cart_item.get_sub_total()
         return total
+
+
+@receiver(models.signals.post_save, sender='store.Cart')
+def create_ticket(sender, instance, created, **kwargs):
+    if instance.ordered and not instance.tickets.all().count() > 0:
+        for cart_item in instance.items.all():
+            if cart_item.item.is_event:
+                instance.tickets.create(
+                    title=f'{cart_item.item.ref_item.name} ({cart_item.item.name})',
+                    remaining_uses=cart_item.quantity
+                )

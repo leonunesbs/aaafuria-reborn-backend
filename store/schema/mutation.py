@@ -29,14 +29,20 @@ class AddToCart(graphene.Mutation):
         if item.is_available is False:
             raise GraphQLError(_('Item is not available'))
 
-        if user.member.has_active_membership:
-            if item.max_per_member is not None:
-                quantity = 0
-                for cart_item in CartItem.objects.filter(cart__user=user, item=item):
-                    quantity += cart_item.quantity
-                if quantity >= item.max_per_member:
-                    raise GraphQLError(
-                        _('You have reached the maximum number of items of this type in your cart.'))
+        if item.max_per_member is not None and user.member.has_active_membership:
+            quantity = 0
+            for cart_item in CartItem.objects.filter(cart__user=user, item=item):
+                quantity += cart_item.quantity
+            if quantity >= item.max_per_member:
+                raise GraphQLError(
+                    _('You have reached the maximum number of items of this type in your cart.'))
+        elif item.max_per_user is not None:
+            quantity = 0
+            for cart_item in CartItem.objects.filter(cart__user=user, item=item):
+                quantity += cart_item.quantity
+            if quantity >= item.max_per_user:
+                raise GraphQLError(
+                    _('You have reached the maximum number of items of this type in your cart.'))
 
         cart = info.context.user.carts.filter(
             checked_out=False).first()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from store.models import Attachment, Cart, CartItem, Item
+from store.models import Attachment, Cart, CartItem, Item, Ticket
 
 
 @admin.register(Item)
@@ -41,3 +41,8 @@ class CartAdmin(admin.ModelAdmin):
         'user__email',
         'user__member__name',
     ]
+
+
+@admin.register(Ticket)
+class TicketAdmin(admin.ModelAdmin):
+    pass

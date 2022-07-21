@@ -201,7 +201,7 @@ class Payment(models.Model):
                 'shippingAddressRequired': 'false',
                 'redirectURL': 'https://aaafuria.site',
                 'notificationURL': 'https://backend.aaafuria.site/bank/wh/',
-                'maxUses': 1,
+                'maxUses': 3,
                 'maxAge': 3000,
                 'timeout': 20,
                 'shippingCost': '1.00',
