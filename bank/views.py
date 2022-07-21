@@ -48,7 +48,7 @@ def bank_webhook(request):
                         if chechout_session['payment_status'] == 'paid':
                             payment = Attachment.objects.get(
                                 content=chechout_session['id']).payment
-                            payment.set_paid(_('Payment completed'))
+                            payment.set_paid(payment.description)
                             return HttpResponse(status=200)
 
                     return HttpResponse(status=204)
@@ -146,13 +146,13 @@ def bank_webhook(request):
             payment = Payment.objects.get(pk=from_global_id(reference)[1])
             payment.attachments.create(
                 title='pagseguro_transaction_code', content=transaction_code)
-            payment.set_paid(_('Payment completed'))
+            payment.set_paid(payment.description)
             return HttpResponse(status=200)
 
         if status == '4':
             reference = obj['transaction']['reference']
             payment = Payment.objects.get(pk=from_global_id(reference)[1])
-            payment.set_expired(_('Payment expired'))
+            payment.set_expired(payment.description)
             return HttpResponse(status=200)
 
     return HttpResponse(status=204)
