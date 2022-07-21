@@ -144,15 +144,15 @@ def bank_webhook(request):
             transaction_code = obj['transaction']['code']
             reference = obj['transaction']['reference']
             payment = Payment.objects.get(pk=from_global_id(reference)[1])
+            payment.set_paid(payment.description)
             payment.attachments.create(
                 title='pagseguro_transaction_code', content=transaction_code)
-            payment.set_paid(payment.description)
             return HttpResponse(status=200)
 
-        if status == '4':
+        if status == '7':
             reference = obj['transaction']['reference']
             payment = Payment.objects.get(pk=from_global_id(reference)[1])
             payment.set_expired(payment.description)
             return HttpResponse(status=200)
 
-    return HttpResponse(status=204)
+    return HttpResponse(status=201)
